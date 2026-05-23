@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="html/styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="html/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="html/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="html/favicon-16x16.png">
+    <link rel="manifest" href="html/site.webmanifest">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <title>contact</title>
+</head>
+
+<body>
+    <br>
+    <center>
+        <noscript>some things here may not work without javascript.</noscript>
+    </center>
+    <div>
+        <b>Contact</b><br>
+        <i>i would love to hear from you!</i>
+        <br><br>
+        <b>email:</b>
+        <div id="email-display" style="display: none;"></div>
+        <br>
+        <!-- Turnstile widget -->
+        <div id="turnstile-container"></div>
+        <br><br>
+        <b><a href="index.html">back</a></b>
+        <br><br>
+        <i>© 2026 XYZZYII</i>
+    </div>
+    <script>
+            const TURNSTILE_SITE_KEY = "0x4AAAAAADKsXSzXI1k7PBOu";
+            const BACKEND_URL = "https://get-email.xyzzyii.workers.dev/";
+
+            window.onload = function () {
+                turnstile.render('#turnstile-container', {
+                    sitekey: TURNSTILE_SITE_KEY,
+                    callback: function (token) {
+                        verifyAndFetchEmail(token);
+                    },
+                });
+            };
+
+            async function verifyAndFetchEmail(token) {
+                try {
+                    const response = await fetch(BACKEND_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ token: token })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+
+                        document.getElementById("email-display").innerHTML =
+                            `<a href="mailto:${data.email}">${data.email}</a>`;
+
+                        document.getElementById("email-display").style.display = "block";
+                        document.getElementById("turnstile-container").style.display = "none";
+                    } else {
+                        console.error("Verification failed");
+                    }
+                } catch (error) {
+                    console.error("Error contacting backend:", error);
+                }
+            }
+        </script>
+</body>
+
+</html>

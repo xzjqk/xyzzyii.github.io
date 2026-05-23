@@ -1,0 +1,41 @@
+:root {
+  --bg: white;
+  --text: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111;
+    --text: #eee;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Bitstream Vera Sans", Arial, Helvetica, sans-serif;
+}
+
+a {
+  color: var(--text);
+}
+
+a:active,
+a:visited {
+  color: var(--text);
+}
+
+div {
+  margin-left: 2.5%;
+}
+
+ol {
+  padding: 0;
+  margin: 0;
+  margin-left: 2.5%;
+}
+
+path {
+  fill: var(--text);
+  stroke-width: 1.76748
+}
